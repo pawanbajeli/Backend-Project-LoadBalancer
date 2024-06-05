@@ -11,13 +11,8 @@ app.post('/route', (req, res) => {
     const payloadSize = Buffer.byteLength(JSON.stringify(data.payload || {}));
     const customCriteria = data.customCriteria;
 
+    // routeRequest handles the response, so we should not send any additional response here
     routeRequest(apiType, payloadSize, customCriteria, res);
-
-    if (customCriteria !== 'priority' && customCriteria !== 'fifo') {
-        res.json({ status: 'processed', queue: 'round-robin', apiType, payloadSize });
-    } else {
-        res.json({ status: 'queued', queue: customCriteria, apiType, payloadSize });
-    }
 });
 
 app.listen(3000, () => {
