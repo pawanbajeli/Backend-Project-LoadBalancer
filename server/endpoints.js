@@ -2,17 +2,17 @@ const endpoints = {
     'rest': [
       'http://localhost:5001/rest',
       'http://localhost:5002/rest',
-      'http://localhost:5003/rest', 
+       
     ],
     'graphql': [
       'http://localhost:5001/graphql',
       'http://localhost:5002/graphql',
-      'http://localhost:5003/graphql', 
+      
     ],
     'grpc': [
       'http://localhost:5001/grpc',
       'http://localhost:5002/grpc',
-      'http://localhost:5003/grpc', 
+     
     ]
   };
   
