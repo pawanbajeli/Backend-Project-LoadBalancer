@@ -1,5 +1,5 @@
 const express = require('express');
-const { routeRequest, processQueues } = require('./router');
+const { routeRequest } = require('./router'); // Import routeRequest only
 const logger = require('./logger');
 
 const app = express();
@@ -11,11 +11,19 @@ app.post('/route', (req, res) => {
     const payloadSize = Buffer.byteLength(JSON.stringify(data.payload || {}));
     const customCriteria = data.customCriteria;
 
-    // routeRequest handles the response, so we should not send any additional response here
-    routeRequest(apiType, payloadSize, customCriteria, res);
+    if (customCriteria === 'priority' || customCriteria === 'fifo') {
+        routeRequest(apiType, payloadSize, customCriteria, res);
+    } else {
+        routeRequest(apiType, payloadSize, null, res);
+    }
 });
 
-app.listen(3000, () => {
+const server = app.listen(3000, () => {
     console.log('Load Balancer running on port 3000');
+});
+
+// Call processQueues after the server has started
+server.on('listening', () => {
+    const { processQueues } = require('./router'); // Import processQueues after the server has started
     processQueues();
 });

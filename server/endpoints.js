@@ -17,13 +17,14 @@ const endpoints = {
   };
   
 
-async function simulateResponseTime(endpoint) {
-    if (endpoint.includes('slow')) {
-        await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate slow response
+  async function simulateResponseTime(endpoint) {
+    let responseTime;
+    if (endpoint && endpoint.includes && endpoint.includes('slow')) {
+        responseTime = 3000 + Math.random() * 2000;
     } else {
-        await new Promise(resolve => setTimeout(resolve, 500)); // Simulate fast response
+        responseTime = 500 + Math.random() * 1000;
     }
-    return { status: 'success', endpoint };
+    await new Promise(resolve => setTimeout(resolve, responseTime));
 }
 
 module.exports = { endpoints, simulateResponseTime };

@@ -1,20 +1,25 @@
 const { endpoints, simulateResponseTime } = require('./endpoints');
-const { fifoQueue, priorityQueue, roundRobinQueue } = require('./queues');
+const FIFOQueue = require('./fifoQueue'); 
+const PriorityQueue=require('./priorityQueue');
+const RoundRobinQueue=require('./RoundRobin');
 const logger = require('./logger');
 
+const fifoQueue = new FIFOQueue(); // Initialize FIFOQueue
+const priorityQueue = new PriorityQueue(); // Initialize PriorityQueue
+const roundRobinQueue = new RoundRobinQueue(endpoints);
+
+
+
 function getNextEndpoint(apiType) {
-    const index = roundRobinQueue[apiType];
-    const endpoint = endpoints[apiType][index];
-    roundRobinQueue[apiType] = (index + 1) % endpoints[apiType].length;
-    return endpoint;
+    return roundRobinQueue.dequeue(apiType);
 }
 
 function routeRequest(apiType, payloadSize, customCriteria = null, res) {
     if (customCriteria === 'priority') {
-        priorityQueue.queue({ apiType, payloadSize, res });
+        priorityQueue.enqueue({ apiType, payloadSize, res }); // Use enqueue for PriorityQueue
         res.json({ status: 'queued', queue: customCriteria, apiType, payloadSize });
     } else if (customCriteria === 'fifo') {
-        fifoQueue.push({ apiType, payloadSize, res });
+        fifoQueue.enqueue({ apiType, payloadSize, res }); // Use enqueue for FIFOQueue
         res.json({ status: 'queued', queue: customCriteria, apiType, payloadSize });
     } else {
         // For round-robin routing, process the request immediately
@@ -25,14 +30,14 @@ function routeRequest(apiType, payloadSize, customCriteria = null, res) {
 
 async function processQueues() {
     while (true) {
-        if (priorityQueue.length > 0) {
-            const request = priorityQueue.dequeue();
+        if (!priorityQueue.isEmpty()) {
+            const request = priorityQueue.dequeue(); // Use dequeue for PriorityQueue
             await handleRequest(request.apiType, request.payloadSize, 'priority', getNextEndpoint(request.apiType), request.res);
-        } else if (fifoQueue.length > 0) {
-            const request = fifoQueue.shift();
+        } else if (!fifoQueue.isEmpty()) {
+            const request = fifoQueue.dequeue(); // Use dequeue for FIFOQueue
             await handleRequest(request.apiType, request.payloadSize, 'fifo', getNextEndpoint(request.apiType), request.res);
         }
-        await new Promise(resolve => setTimeout(resolve, 100)); // Avoid tight loop
+        await new Promise(resolve => setTimeout(resolve, 100)); 
     }
 }
 
@@ -54,7 +59,7 @@ async function handleRequest(apiType, payloadSize, queueType, selectedEndpoint, 
 
     console.log(`Request from ${queueType} queue routed to ${selectedEndpoint} with response time ${responseTime}s`);
     
-    // Send the response back
+    // Send the response back only if it hasn't been sent already
     if (!res.headersSent) {
         res.json({ endpoint: selectedEndpoint, response_time: responseTime });
     }
