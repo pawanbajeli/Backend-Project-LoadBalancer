@@ -12,8 +12,8 @@
     "loadBalancingAlgorithm": "Priority Queue"
   },
   "fifo": {
-    "averageResponseTime": 1.0640571428571433,
-    "throughput": 70,
+    "averageResponseTime": 1.0760000000000005,
+    "throughput": 71,
     "performanceAnalysis": "Performance needs improvement with slow response times.",
     "loadBalancingAlgorithm": "First In First Out (FIFO)"
   }
