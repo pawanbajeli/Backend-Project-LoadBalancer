@@ -151,7 +151,7 @@ app.get('/route', (req, res) => {
 
 // Add a route for the root URL
 app.get('/', (req, res) => {
-    res.send('Hello, world!');
+    res.send('Hello, your application running !!');
 });
 
 const server = app.listen(PORT, () => {
