@@ -209,3 +209,4 @@
 {"level":"info","message":{"apiType":"rest","payloadSize":606,"queueType":"priority","responseTime":0.383,"selectedEndpoint":"http://localhost:5002/rest?responseTime=slow","service":"api2","timestamp":"2024-06-06T06:49:34.719Z"},"service":"load-balancer"}
 {"level":"info","message":{"apiType":"rest","payloadSize":998,"queueType":"fifo","responseTime":0.844,"selectedEndpoint":"http://localhost:5001/rest","service":"api1","timestamp":"2024-06-06T06:49:35.675Z"},"service":"load-balancer"}
 {"level":"info","message":{"apiType":"grpc","payloadSize":586,"queueType":"fifo","responseTime":0.546,"selectedEndpoint":"http://localhost:5001/grpc","service":"api1","timestamp":"2024-06-06T06:49:36.336Z"},"service":"load-balancer"}
+{"level":"info","message":{"apiType":"rest","payloadSize":17,"queueType":"fifo","responseTime":1.69,"selectedEndpoint":"http://localhost:5001/rest","service":"api1","timestamp":"2024-06-06T07:13:36.756Z"},"service":"load-balancer"}
