@@ -8,25 +8,28 @@ app.get('/', (req, res) => {
     res.send('Welcome to API1');
 });
 
-app.get('/rest', (req, res) => {
+// Helper function to simulate a delay
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+app.get('/rest', async (req, res) => {
     console.log('API1 received a REST request');
-    setTimeout(() => {
-        res.json({ status: 'success', type: 'rest' });
-    }, 1000); // Simulate response time
+    const responseTime = Math.random() * 2000; // Random delay up to 2000ms
+    await delay(responseTime);
+    res.json({ status: 'success', type: 'rest', responseTime });
 });
 
-app.get('/graphql', (req, res) => {
+app.get('/graphql', async (req, res) => {
     console.log('API1 received a GraphQL request');
-    setTimeout(() => {
-        res.json({ status: 'success', type: 'graphql' });
-    }, 1500); // Simulate response time
+    const responseTime = Math.random() * 2000; // Random delay up to 2000ms
+    await delay(responseTime);
+    res.json({ status: 'success', type: 'graphql', responseTime });
 });
 
-app.get('/grpc', (req, res) => {
+app.get('/grpc', async (req, res) => {
     console.log('API1 received a gRPC request');
-    setTimeout(() => {
-        res.json({ status: 'success', type: 'grpc' });
-    }, 500); // Simulate response time
+    const responseTime = Math.random() * 2000; // Random delay up to 2000ms
+    await delay(responseTime);
+    res.json({ status: 'success', type: 'grpc', responseTime });
 });
 
 app.listen(port, () => {

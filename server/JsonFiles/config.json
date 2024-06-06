@@ -1,0 +1,80 @@
+{
+    "milestone1": {
+      "load_balancer": {
+        "port": 3000,
+        "logging": {
+          "log_file_path": "logs/milestone1_requests.log",
+          "log_level": "info"
+        },
+        "endpoints": {
+          "rest": [
+            "http://localhost:5001/rest", 
+            "http://localhost:5002/rest?responseTime=slow"
+          ],
+          "graphql": [
+            "http://localhost:5001/graphql",
+            "http://localhost:5002/graphql?responseTime=slow"
+          ],
+          "grpc": [
+            "http://localhost:5001/grpc",
+            "http://localhost:5002/grpc?responseTime=slow"
+          ]
+        },
+        "response_times": {
+          "fast": {
+            "min_time": 500,
+            "max_time": 1500
+          },
+          "slow": {
+            "min_time": 3000,
+            "max_time": 5000
+          }
+        }
+      }
+    },
+    "milestone2": {
+      "load_balancer": {
+        "port": 3000,
+        "logging": {
+          "log_file_path": "logs/milestone2_requests.log",
+          "log_level": "info"
+        },
+        "endpoints": {
+          "rest": [
+            "http://localhost:5001/rest", 
+            "http://localhost:5002/rest?responseTime=slow"
+          ],
+          "graphql": [
+            "http://localhost:5001/graphql",
+            "http://localhost:5002/graphql?responseTime=slow"
+          ],
+          "grpc": [
+            "http://localhost:5001/grpc",
+            "http://localhost:5002/grpc?responseTime=slow"
+          ]
+        },
+        "response_times": {
+          "fast": {
+            "min_time": 500,
+            "max_time": 1500
+          },
+          "slow": {
+            "min_time": 3000,
+            "max_time": 5000
+          }
+        },
+        "queues": {
+          "fifo": {
+            "max_size": 100
+          },
+          "priority": {
+            "max_size": 50
+          },
+          "round_robin": {
+            "rotation_interval": 5000
+          }
+        }
+      }
+    }
+  }
+  

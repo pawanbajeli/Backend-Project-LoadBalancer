@@ -3,7 +3,7 @@ const FIFOQueue = require('./fifoQueue');
 const PriorityQueue = require('./priorityQueue');
 const RoundRobinQueue = require('./RoundRobin');
 const logger = require('./logger');
-const axios = require('axios'); // Add axios to handle HTTP requests
+const axios = require('axios');
 
 const fifoQueue = new FIFOQueue();
 const priorityQueue = new PriorityQueue();
@@ -14,16 +14,24 @@ function getNextEndpoint(apiType) {
 }
 
 function routeRequest(apiType, payloadSize, customCriteria = null, res) {
-    if (customCriteria === 'priority') {
-        priorityQueue.enqueue({ apiType, payloadSize, res });
-        res.json({ status: 'queued', queue: customCriteria, apiType, payloadSize });
-    } else if (customCriteria === 'fifo') {
-        fifoQueue.enqueue({ apiType, payloadSize, res });
-        res.json({ status: 'queued', queue: customCriteria, apiType, payloadSize });
-    } else {
-        const selectedEndpoint = getNextEndpoint(apiType);
-        console.log(`Selected endpoint: ${selectedEndpoint}`); // Log the selected endpoint
-        handleRequest(apiType, payloadSize, 'round-robin', selectedEndpoint, res);
+    // Custom criteria handling
+    switch (customCriteria) {
+        case 'priority':
+            priorityQueue.enqueue({ apiType, payloadSize, res });
+            res.json({ status: 'queued', queue: customCriteria, apiType, payloadSize });
+            break;
+        case 'fifo':
+            fifoQueue.enqueue({ apiType, payloadSize, res });
+            res.json({ status: 'queued', queue: customCriteria, apiType, payloadSize });
+            break;
+        default:
+            const selectedEndpoint = getNextEndpoint(apiType);
+            const randomize = Math.random() < 0.5;
+            const randomizedEndpoint = randomize ? getNextEndpoint(apiType) : selectedEndpoint;
+
+            console.log(`Selected endpoint: ${randomizedEndpoint}`);
+            handleRequest(apiType, payloadSize, 'round-robin', randomizedEndpoint, res);
+            break;
     }
 }
 
@@ -43,12 +51,9 @@ async function processQueues() {
 async function handleRequest(apiType, payloadSize, queueType, selectedEndpoint, res) {
     const startTime = Date.now();
     try {
-        // Use axios to make a request to the selected endpoint to check if it is reachable
         await axios.get(selectedEndpoint);
         const endTime = Date.now();
         const responseTime = (endTime - startTime) / 1000;
-
-        // Extract the service (api1 or api2) from the selectedEndpoint
         const service = selectedEndpoint.includes('5001') ? 'api1' : 'api2';
 
         logger.info({
@@ -89,3 +94,5 @@ async function handleRequest(apiType, payloadSize, queueType, selectedEndpoint, 
 }
 
 module.exports = { routeRequest, processQueues };
+
+

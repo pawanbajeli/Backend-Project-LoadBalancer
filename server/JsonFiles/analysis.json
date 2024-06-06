@@ -1,0 +1,20 @@
+{
+  "round-robin": {
+    "averageResponseTime": 1.0171617647058824,
+    "throughput": 68,
+    "performanceAnalysis": "Performance needs improvement with slow response times.",
+    "loadBalancingAlgorithm": "Round Robin"
+  },
+  "priority": {
+    "averageResponseTime": 1.0713709677419356,
+    "throughput": 62,
+    "performanceAnalysis": "Performance needs improvement with slow response times.",
+    "loadBalancingAlgorithm": "Priority Queue"
+  },
+  "fifo": {
+    "averageResponseTime": 1.0640571428571433,
+    "throughput": 70,
+    "performanceAnalysis": "Performance needs improvement with slow response times.",
+    "loadBalancingAlgorithm": "First In First Out (FIFO)"
+  }
+}
