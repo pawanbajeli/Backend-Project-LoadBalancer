@@ -36,6 +36,14 @@ const logger = require('./logger');
 const app = express();
 app.use(express.json());
 
+
+
+// Middleware to log requested URL
+app.use((req, res, next) => {
+    console.log('Requested URL:', req.path);
+    next();
+});
+
 // Handle POST requests to /route endpoint
 app.post('/route', (req, res) => {
     const data = req.body;
