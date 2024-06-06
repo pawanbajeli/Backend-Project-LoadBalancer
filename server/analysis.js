@@ -91,5 +91,5 @@ function writePerformanceToFile(performance, filePath) {
     fs.writeFileSync(filePath, JSON.stringify(performance, null, 2));
 }
 
-// Execute main function
+
 main();
