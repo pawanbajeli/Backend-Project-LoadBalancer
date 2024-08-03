@@ -38,18 +38,6 @@ then run the file using
 `./testCase.sh`
 
 
-
-## Deployment
-
-Project is deployed in `vercel`
-link: `https://pawan-singh-wasserstoff-backend-task.vercel.app/`
-
-
-## Postman Collection
-
-link: `https://drive.google.com/file/d/1yawWyW8k8ezCevgFQ-FmLFXSxpULlfz0/view?usp=sharing`
-
-
 ### Note
 to analyze the performnace of different algo you can run `analysis.js` file 
 
